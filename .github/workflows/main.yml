@@ -1,0 +1,33 @@
+name: Build Rust Android APK
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android
+
+      - name: Setup Android NDK
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r25c
+
+      - name: Install Cargo-APK
+        run: cargo install cargo-apk
+
+      - name: Build APK (Release)
+        run: cargo apk build --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: hand-tracker-debug
+          path: target/release/apk/*.apk
