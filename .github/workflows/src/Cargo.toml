@@ -1,0 +1,31 @@
+[package]
+name = "rust-hand-tracker"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+# Base para rodar Rust no Android
+android-activity = { version = "0.5", features = ["game-activity"] }
+ndk = "0.8"
+ndk-sys = "0.5"
+log = "0.4"
+android_logger = "0.13"
+
+# Para o processamento do esqueleto (MediaPipe)
+# Nota: Você precisará compilar ou baixar os binários do MediaPipe para Android
+mediapipe-rs = "0.1.0" 
+
+[package.metadata.android]
+package_name = "com.exemplo.rusthand"
+label = "Rust Hand Tracker"
+build_targets = ["aarch64-linux-android"]
+
+[[package.metadata.android.uses_permission]]
+name = "android.permission.CAMERA"
+
+[[package.metadata.android.uses_feature]]
+name = "android.hardware.camera"
+required = true
